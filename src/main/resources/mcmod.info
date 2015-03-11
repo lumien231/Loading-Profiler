@@ -1,0 +1,16 @@
+[
+{
+  "modid": "LoadingProfiler",
+  "name": "Loading Profiler",
+  "description": "Shows how long mods take for FML Loading Events",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["lumien"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
