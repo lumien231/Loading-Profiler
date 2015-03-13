@@ -34,6 +34,11 @@ public class MCPNames
 			fields = methods = null;
 		}
 	}
+	
+	public void test()
+	{
+		
+	}
 
 	public static boolean mcp()
 	{

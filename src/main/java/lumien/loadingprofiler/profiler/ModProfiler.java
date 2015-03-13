@@ -1,4 +1,4 @@
-package lumien.loadingprofiler;
+package lumien.loadingprofiler.profiler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,45 +7,53 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.asm.ASMTransformerWrapper.TransformerWrapper;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class Profiler
+public class ModProfiler
 {
 	Logger logger = LogManager.getLogger("LoadingProfiler");
 
-	static Profiler INSTANCE;
+	static ModProfiler INSTANCE;
 
 	// Times
-	public ArrayList<ProfileResult> constructing;
-	public ArrayList<ProfileResult> preInit;
-	public ArrayList<ProfileResult> init;
-	public ArrayList<ProfileResult> postInit;
+	public ArrayList<ModProfileResult> constructing;
+	public ArrayList<ModProfileResult> preInit;
+	public ArrayList<ModProfileResult> init;
+	public ArrayList<ModProfileResult> postInit;
 
 	// State
 	ModContainer currentContainer;
 	long savedTime;
 
-	private Profiler()
+	private ModProfiler()
 	{
-		constructing = new ArrayList<ProfileResult>();
-		preInit = new ArrayList<ProfileResult>();
-		init = new ArrayList<ProfileResult>();
-		postInit = new ArrayList<ProfileResult>();
+		constructing = new ArrayList<ModProfileResult>();
+		preInit = new ArrayList<ModProfileResult>();
+		init = new ArrayList<ModProfileResult>();
+		postInit = new ArrayList<ModProfileResult>();
 	}
 
 	private void logPre(FMLEvent event, ModContainer modContainer)
 	{
 		currentContainer = modContainer;
-		savedTime = System.currentTimeMillis();
+		savedTime = System.nanoTime();
 	}
 
 	private void logPost(FMLEvent event, ModContainer modContainer)
 	{
+		TransformerProfiler transformerProfiler = TransformerProfiler.getProfiler();
+		if (transformerProfiler.transformerRan)
+		{
+			transformerProfiler.transformerRan = false;
+			savedTime+=transformerProfiler.nestedTime;
+		}
 		if (currentContainer != modContainer)
 		{
 			logger.log(Level.INFO, "Changed Mod Container WOT");
@@ -55,41 +63,41 @@ public class Profiler
 			if (event instanceof FMLConstructionEvent)
 			{
 				// Constructing
-				constructing.add(new ProfileResult(modContainer, System.currentTimeMillis() - savedTime));
+				constructing.add(new ModProfileResult(modContainer, System.nanoTime() - savedTime));
 			}
 			else if (event instanceof FMLPreInitializationEvent)
 			{
 				// PreInit
-				preInit.add(new ProfileResult(modContainer, System.currentTimeMillis() - savedTime));
+				preInit.add(new ModProfileResult(modContainer, System.nanoTime() - savedTime));
 			}
 			else if (event instanceof FMLInitializationEvent)
 			{
 				// Init
-				init.add(new ProfileResult(modContainer, System.currentTimeMillis() - savedTime));
+				init.add(new ModProfileResult(modContainer, System.nanoTime() - savedTime));
 			}
 			else if (event instanceof FMLPostInitializationEvent)
 			{
 				// Post Init
-				postInit.add(new ProfileResult(modContainer, System.currentTimeMillis() - savedTime));
+				postInit.add(new ModProfileResult(modContainer, System.nanoTime() - savedTime));
 			}
 		}
 	}
 
-	public static void pre(FMLEvent event, ModContainer modContainer)
+	public static void preEvent(FMLEvent event, ModContainer modContainer)
 	{
 		getProfiler().logPre(event, modContainer);
 	}
 
-	public static void post(FMLEvent event, ModContainer modContainer)
+	public static void postEvent(FMLEvent event, ModContainer modContainer)
 	{
 		getProfiler().logPost(event, modContainer);
 	}
 
-	public static Profiler getProfiler()
+	public static ModProfiler getProfiler()
 	{
 		if (INSTANCE == null)
 		{
-			INSTANCE = new Profiler();
+			INSTANCE = new ModProfiler();
 		}
 
 		return INSTANCE;

@@ -3,8 +3,10 @@ package lumien.loadingprofiler.asm;
 import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-@IFMLLoadingPlugin.SortingIndex(1001)
+@IFMLLoadingPlugin.SortingIndex(-20000000)
+@TransformerExclusions("lumien.loadingprofiler")
 public class LoadingPlugin implements IFMLLoadingPlugin
 {
 	public static boolean IN_MCP = false;
