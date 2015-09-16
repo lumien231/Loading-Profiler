@@ -147,12 +147,12 @@ public class ClassTransformer implements IClassTransformer
 						InsnList insertBefore = new InsnList();
 						InsnList insertAfter = new InsnList();
 
-						insertBefore.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "lumien/loadingprofiler/profiler/ModProfiler", "preEvent", "(Lnet/minecraftforge/fml/common/event/FMLEvent;Lnet/minecraftforge/fml/common/ModContainer;)V", false));
 						insertBefore.add(new VarInsnNode(ALOAD, 1));
-						insertBefore.add(new VarInsnNode(ALOAD, 3));
+						insertBefore.add(new VarInsnNode(ALOAD, 4));
+						insertBefore.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "lumien/loadingprofiler/profiler/ModProfiler", "preEvent", "(Lnet/minecraftforge/fml/common/event/FMLEvent;Lnet/minecraftforge/fml/common/ModContainer;)V", false));
 
 						insertAfter.add(new VarInsnNode(ALOAD, 1));
-						insertAfter.add(new VarInsnNode(ALOAD, 3));
+						insertAfter.add(new VarInsnNode(ALOAD, 4));
 						insertAfter.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "lumien/loadingprofiler/profiler/ModProfiler", "postEvent", "(Lnet/minecraftforge/fml/common/event/FMLEvent;Lnet/minecraftforge/fml/common/ModContainer;)V", false));
 
 						propogate.instructions.insertBefore(min, insertBefore);

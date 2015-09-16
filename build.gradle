@@ -1,23 +1,30 @@
+/*
+// For those who want the bleeding edge
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
+*/
 
-apply plugin: 'forge'
+// for people who want stable
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.1"
+}
 
-version = "1.1"
+repositories {
+    maven { url = "http://maven.cil.li/" }
+}
+
+version = "1.2"
 group= "lumien.loadingprofiler" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "LoadingProfiler-MC1.8"
 
@@ -28,7 +35,7 @@ jar {
 }
 
 minecraft {
-    version = "1.8-11.14.1.1336"
+    version = "1.8-11.14.3.1514"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -36,7 +43,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20141130"
+    mappings = "snapshot_20150915"
 }
 
 dependencies {
