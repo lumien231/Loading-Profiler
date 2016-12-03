@@ -1,6 +1,6 @@
 [
 {
-  "modid": "LoadingProfiler",
+  "modid": "loadingprofiler",
   "name": "Loading Profiler",
   "description": "Shows how long mods take for FML Loading Events",
   "version": "${version}",

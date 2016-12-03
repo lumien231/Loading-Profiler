@@ -33,7 +33,7 @@ import net.minecraftforge.fml.common.asm.ASMTransformerWrapper.TransformerWrappe
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(name = "LoadingProfiler", version = "1.1", modid = "LoadingProfiler")
+@Mod(name = "LoadingProfiler", version = "1.1", modid = "loadingprofiler")
 public class LoadingProfiler
 {
 	Logger logger;
